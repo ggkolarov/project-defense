@@ -1,28 +1,54 @@
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
+import { useState } from 'react';
 
 import styles from './CreateHike.module.scss';
 
-export const CreateHike = () => {
-    return (
-        <Form className={styles.create__form}>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Email address</Form.Label>
-                <Form.Control type="email" placeholder="Enter email" />
-                <Form.Text className="text-muted">
-                    We'll never share your email with anyone else.
-                </Form.Text>
-            </Form.Group>
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 
-            <Form.Group className="mb-3" controlId="formBasicPassword">
-                <Form.Label>Password</Form.Label>
-                <Form.Control type="password" placeholder="Password" />
+//Hook
+import { useForm } from '../../hooks/useForm';
+
+export const CreateHike = ({
+    onSubmitCreateHike,
+}) => {
+    const {formValues, onChangeHandler, onSubmit} = useForm({ text: '' }, onSubmitCreateHike);
+
+    return (
+        <Form className={styles.create__form} onSubmit={onSubmit}>
+            <Form.Group className="mb-3">
+                <Form.Label>Заглавие на маршрута</Form.Label>
+                <Form.Control type="text" id="title" name="title" placeholder="х.Вирхен - вр. Мусала" value={formValues.title || ''} onChange={onChangeHandler} />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                <Form.Check type="checkbox" label="Check me out" />
+            <Form.Group className="mb-3">
+                <Form.Label>Снимка</Form.Label>
+                <Form.Control type="text" id="imageUrl" name="imageUrl" placeholder="Добави линк към снимката" value={formValues.imageUrl || ''} onChange={onChangeHandler} />
+            </Form.Group>
+            <Form.Group className="mb-3">
+                <Form.Label>Сезон</Form.Label>
+                <Form.Control type="text" id="season" name="season" placeholder="Зима, Лято, Есен, Пролет" value={formValues.season || ''} onChange={onChangeHandler} />
+            </Form.Group>
+            <Form.Group className="mb-3">
+                <Form.Label>Област</Form.Label>
+                <Form.Control type="text" id="region" name="region" placeholder="София Град" value={formValues.region || ''} onChange={onChangeHandler} />
+            </Form.Group>
+            <Form.Group className="mb-3">
+                <Form.Label>Планина</Form.Label>
+                <Form.Control type="text" id="mountain" name="mountain" placeholder="Пирин" value={formValues.mountain || ''} onChange={onChangeHandler} />
+            </Form.Group>
+            <Form.Group className="mb-3">
+                <Form.Label>Денивелация</Form.Label>
+                <Form.Control type="text" id="denivelation" name="denivelation" placeholder="100м" value={formValues.denivelation || ''} onChange={onChangeHandler} />
+            </Form.Group>
+            <Form.Group className="mb-3">
+                <Form.Label>Дължина на маршрута</Form.Label>
+                <Form.Control type="text" id="length" name="length" placeholder="4 км" value={formValues.length || ''} onChange={onChangeHandler} />
+            </Form.Group>
+            <Form.Group className="mb-3">
+                <Form.Label>Времетраене</Form.Label>
+                <Form.Control type="text" id="duration" name="duration" placeholder="1.30 часа" value={formValues.duration || ''} onChange={onChangeHandler} />
             </Form.Group>
             <Button variant="primary" type="submit">
-                Submit
+                Добави
             </Button>
         </Form>
     );

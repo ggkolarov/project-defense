@@ -1,3 +1,6 @@
+import { useContext } from 'react';
+import { ModalShowHideContext } from '../../context/ModalShowHideContext';
+
 import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
@@ -5,9 +8,8 @@ import styles from './Login.module.scss';
 
 export const Login = ({
     show,
-    handleShow,
-    handleClose,
 }) => {
+    const { handleClose } = useContext(ModalShowHideContext);
     return (
         <>
             <Modal
@@ -24,7 +26,7 @@ export const Login = ({
                     escape key.
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
+                    <Button variant="secondary" onClick={() => handleClose()}>
                         Close
                     </Button>
                     <Button variant="primary">Understood</Button>

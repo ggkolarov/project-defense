@@ -1,5 +1,14 @@
-export const AllHikings = () => {
+import { Hike } from "../components/Hike/Hike";
+
+export const AllHikings = ({
+    hikes,
+}) => {
     return (
-        <h1>All hikings listed here</h1>
+        <div className="module-container">
+            <h1 className="page__title">Списък с всички маршрути</h1>
+            <div className="list">
+                {hikes.map(hike => <Hike key={hike._id} {...hike} />)}
+            </div>
+        </div>
     );
 };

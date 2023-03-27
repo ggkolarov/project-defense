@@ -1,10 +1,12 @@
+import { useContext } from 'react';
+import { ModalShowHideContext } from '../../context/ModalShowHideContext';
+
 import { Link } from 'react-router-dom';
 import styles from './Header.module.scss';
 import logo from '../../images/logo.png';
 
-export const Header = ({
-    handleShow,
-}) => {
+export const Header = () => {
+    const { handleShow } = useContext(ModalShowHideContext)
     return (
         <header>
             <div className="module-container">
@@ -21,7 +23,7 @@ export const Header = ({
                     </div>
 
                     {/* only for not logged users */}
-                    <button onClick={handleShow} className="login">Влез</button>
+                    <button onClick={() => handleShow()} className="login">Влез</button>
                     <button className={styles.register}>Регистрирай се</button>
 
                     {/* only for logged users */}

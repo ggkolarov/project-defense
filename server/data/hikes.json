@@ -1,0 +1,26 @@
+{
+  "todo_1": {
+    "text": "",
+    "title": "Батак - Баташки снежник",
+    "imageUrl": "https://izbulgaria.com/wp-content/uploads/2022/12/vrah-batashki-snejnik-768x576.jpg",
+    "season": "Зима",
+    "region": "Пазарджик",
+    "mountain": "Родопи",
+    "denivelation": "700 м",
+    "length": "14 км",
+    "duration": "6 часа",
+    "_id": "34496c80-e849-4dfb-b75a-5c537618331e"
+  },
+  "todo_2": {
+    "text": "",
+    "title": "х. Вихрен - вр. Каменица",
+    "imageUrl": "https://live.staticflickr.com/7127/7500071388_06f2070192_c.jpg",
+    "season": "Лято",
+    "region": "Банско",
+    "mountain": "Пирин",
+    "denivelation": "1100 м",
+    "length": "24 км",
+    "duration": "16 часа",
+    "_id": "34496c80-e849-4dfb-b75a-5c5353438748331e"
+  }
+}
