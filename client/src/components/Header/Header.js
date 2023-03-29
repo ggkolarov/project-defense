@@ -6,7 +6,8 @@ import styles from './Header.module.scss';
 import logo from '../../images/logo.png';
 
 export const Header = () => {
-    const { handleShow } = useContext(ModalShowHideContext)
+    const { handleShow } = useContext(ModalShowHideContext);
+    
     return (
         <header>
             <div className="module-container">

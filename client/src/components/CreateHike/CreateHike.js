@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import styles from './CreateHike.module.scss';
 
 import Button from 'react-bootstrap/Button';
@@ -36,6 +34,14 @@ export const CreateHike = ({
                 <Form.Control type="text" id="mountain" name="mountain" placeholder="Пирин" value={formValues.mountain || ''} onChange={onChangeHandler} />
             </Form.Group>
             <Form.Group className="mb-3">
+                <Form.Label>Начална точка</Form.Label>
+                <Form.Control type="text" id="startingPoint" name="startingPoint" placeholder="Начална точка на маршрута" value={formValues.startingPoint || ''} onChange={onChangeHandler} />
+            </Form.Group>
+            <Form.Group className="mb-3">
+                <Form.Label>Крайна точка</Form.Label>
+                <Form.Control type="text" id="endPoint" name="endPoint" placeholder="Крайна точка на маршрута" value={formValues.endPoint || ''} onChange={onChangeHandler} />
+            </Form.Group>
+            <Form.Group className="mb-3">
                 <Form.Label>Денивелация</Form.Label>
                 <Form.Control type="text" id="denivelation" name="denivelation" placeholder="100м" value={formValues.denivelation || ''} onChange={onChangeHandler} />
             </Form.Group>
@@ -46,6 +52,10 @@ export const CreateHike = ({
             <Form.Group className="mb-3">
                 <Form.Label>Времетраене</Form.Label>
                 <Form.Control type="text" id="duration" name="duration" placeholder="1.30 часа" value={formValues.duration || ''} onChange={onChangeHandler} />
+            </Form.Group>
+            <Form.Group className="mb-3">
+                <Form.Label>Описание</Form.Label>
+                <Form.Control as="textarea" style={{ height: '100px' }} type="text" id="hikeInfo" name="hikeInfo" placeholder="Информация за маршрута" value={formValues.hikeInfo || ''} onChange={onChangeHandler} />
             </Form.Group>
             <Button variant="primary" type="submit">
                 Добави

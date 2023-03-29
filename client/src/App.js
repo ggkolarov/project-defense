@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import { Routes, Route , useNavigate} from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 
-import * as hikeService from './services/hikeService'; 
+import * as hikeService from './services/hikeService';
 
 //Context
 import { ModalShowHideContext } from './context/ModalShowHideContext';
+import { HikeItemContext } from './context/HikeItemContext';
 
 // Styles
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -13,12 +14,14 @@ import "./index.scss"
 // Pages
 import { Header } from "./components/Header/Header";
 import { Navigation } from "./components/Navigation/Navigation";
+import { Footer } from "./components/Footer/Footer";
 
 // Components
 import { Home } from './pages/Home';
 import { AllHikings } from './pages/AllHikings';
 import { Login } from './components/Login/Login';
 import { CreateHike } from './components/CreateHike/CreateHike';
+import { HikeDetails } from './components/HikeDetails/HikeDetails';
 
 function App() {
     const navigate = useNavigate();
@@ -27,10 +30,10 @@ function App() {
 
     useEffect(() => {
         hikeService.getAll()
-        .then(result => {
-            console.log(result);
-            setHikes(Object.values(result)); // resultata se setva chrez setHikes v state-a
-        })
+            .then(result => {
+                console.log(result);
+                setHikes(Object.values(result));
+            })
     }, []);
 
     const onSubmitCreateHike = async (data) => {
@@ -42,7 +45,13 @@ function App() {
 
         setHikes(state => [...state, newHike]); // get all old hikes (...state) and add the new one as well
 
-        navigate('/all-hikings');
+        navigate('/hikings');
+    };
+
+    const onHikeDeleteClick = async (hikeId) => {
+        await hikeService.remove(hikeId);
+
+        setHikes(state => state.filter(x => x._id !== hikeId));
     };
 
     const handleClose = () => setShow(false);
@@ -51,6 +60,10 @@ function App() {
     const modalShowHideContext = {
         handleShow,
         handleClose,
+    };
+
+    const hikeItemContext = {
+        onHikeDeleteClick,
     };
 
     return (
@@ -63,12 +76,21 @@ function App() {
             </ModalShowHideContext.Provider>
 
             <div className="main__content" style={{ textAlign: 'center' }}>
-                <Routes>
-                    <Route path='/' element={<Home />} />
-                    <Route path='/create-hike' element={<CreateHike onSubmitCreateHike={onSubmitCreateHike} />} />
-                    <Route path='/all-hikings' element={<AllHikings hikes={hikes} />} />
-                </Routes>
+                <div className="module-container">
+                    <Routes>
+                        <Route path='/' element={<Home />} />
+                        <Route path='/create-hike' element={<CreateHike onSubmitCreateHike={onSubmitCreateHike} />} />
+                        <Route path='/hikings' element={
+                            <HikeItemContext.Provider value={hikeItemContext}>
+                                <AllHikings hikes={hikes} />
+                            </HikeItemContext.Provider>
+                        }
+                        />
+                        <Route path='/hikings/:hikeId' element={<HikeDetails />} />
+                    </Routes>
+                </div>
             </div>
+            <Footer />
         </div>
     );
 }
