@@ -1,34 +1,44 @@
 import { useContext } from 'react';
-import { ModalShowHideContext } from '../../context/ModalShowHideContext';
+import { FormsContext } from '../../contexts/FormsContext';
 
 import { Link } from 'react-router-dom';
 import styles from './Header.module.scss';
 import logo from '../../images/logo.png';
 
 export const Header = () => {
-    const { handleShow } = useContext(ModalShowHideContext);
-    
+    const { isAuthenticated, userEmail } = useContext(FormsContext);
+    const { onLogout } = useContext(FormsContext);
+    const { showLoginModal } = useContext(FormsContext);
+    const { showRegisterModal } = useContext(FormsContext);
+
     return (
         <header>
             <div className="module-container">
                 <Link to="/"><img className={styles.logo} src={logo} alt="" /></Link>
 
-                <div className={styles.add__hiking}>
-                    {/* <button onClick={handleShow}>Добави преход</button> */}
-                    <Link to="/create-hike">Добави преход</Link>
-                </div>
+                {isAuthenticated && (
+                    <>
+                        <div className={styles.add__hiking}>
+                            <Link to="/create-hike">Добави преход</Link>
+                        </div>
+
+                        <div className={styles.user__info}>
+                            <span>{userEmail}</span>
+                        </div>
+                    </>
+                )}
 
                 <div className={styles.user__controls}>
-                    <div className={styles.user__info}>
-                        <span className={styles.username}>ggkolarov</span>
-                    </div>
+                    {!isAuthenticated && (
+                        <>
+                            <button onClick={() => showLoginModal()} className="login">Влез</button>
+                            <button onClick={() => showRegisterModal()} className={styles.register}>Регистрирай се</button>
+                        </>
+                    )}
 
-                    {/* only for not logged users */}
-                    <button onClick={() => handleShow()} className="login">Влез</button>
-                    <button className={styles.register}>Регистрирай се</button>
-
-                    {/* only for logged users */}
-                    <button className="logout">Излез</button>
+                    {isAuthenticated && (
+                        <button className="logout" onClick={() => onLogout()}>Излез</button>
+                    )}
                 </div>
             </div>
         </header>

@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Hike.module.scss';
 
-import { HikeItemContext } from '../../context/HikeItemContext';
+import { HikeItemContext } from '../../contexts/HikeItemContext';
 
 export const Hike = ({
     _id,

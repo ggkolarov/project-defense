@@ -1,35 +1,51 @@
+import React from 'react';
 import { useContext } from 'react';
-import { ModalShowHideContext } from '../../context/ModalShowHideContext';
 
-import React, { useState } from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import { FormsContext } from '../../contexts/FormsContext';
+import { useForm } from '../../hooks/useForm';
 
-import styles from './Login.module.scss';
+import { Modal, Form, Button } from 'react-bootstrap';
 
 export const Login = ({
     show,
 }) => {
-    const { handleClose } = useContext(ModalShowHideContext);
+    const { onLoginSubmit } = useContext(FormsContext);
+    const { closeLoginModal } = useContext(FormsContext);
+
+    const { formValues, onChangeHandler, onSubmit } = useForm({
+        email: '',
+        password: ''
+    }, onLoginSubmit);
+
     return (
         <>
             <Modal
                 show={show}
-                onHide={handleClose}
+                onHide={closeLoginModal}
                 backdrop="static"
                 keyboard={false}
             >
                 <Modal.Header closeButton>
-                    <Modal.Title>Modal title</Modal.Title>
+                    <Modal.Title>Вход</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    I will not close if you click outside me. Don't even try to press
-                    escape key.
+                    <Form method="POST" onSubmit={onSubmit}>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Имейл адрес:</Form.Label>
+                            <Form.Control type="text" id="email" name="email" placeholder="example@gmail.com" value={formValues.email || ''} onChange={onChangeHandler} />
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Парола:</Form.Label>
+                            <Form.Control type="password" id="password" name="password" value={formValues.password || ''} onChange={onChangeHandler} />
+                        </Form.Group>
+                        <Button variant="primary" type="submit">Влез</Button>
+                        <p>Ако нямаш регистрация:
+                            <Button variant="secondary" onClick={() => closeLoginModal()}>Натисни тук</Button>
+                        </p>
+                    </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={() => handleClose()}>
-                        Close
-                    </Button>
-                    <Button variant="primary">Understood</Button>
+                    <Button variant="secondary" onClick={() => closeLoginModal()}>Затвори</Button>
                 </Modal.Footer>
             </Modal>
         </>

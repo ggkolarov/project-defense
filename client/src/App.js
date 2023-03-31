@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 
+//Services
+import * as authService from './services/authService';
 import * as hikeService from './services/hikeService';
 
-//Context
-import { ModalShowHideContext } from './context/ModalShowHideContext';
-import { HikeItemContext } from './context/HikeItemContext';
+//Contexts
+import { FormsContext } from './contexts/FormsContext';
+import { HikeItemContext } from './contexts/HikeItemContext';
 
 // Styles
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -18,15 +20,18 @@ import { Footer } from "./components/Footer/Footer";
 
 // Components
 import { Home } from './pages/Home';
-import { AllHikings } from './pages/AllHikings';
 import { Login } from './components/Login/Login';
+import { Register } from './components/Register/Register';
 import { CreateHike } from './components/CreateHike/CreateHike';
+import { AllHikings } from './pages/AllHikings';
 import { HikeDetails } from './components/HikeDetails/HikeDetails';
 
 function App() {
     const navigate = useNavigate();
-    const [show, setShow] = useState(false);
+    const [auth, setAuth] = useState({});
     const [hikes, setHikes] = useState([]);
+    const [loginModal, setLoginModal] = useState(false);
+    const [registerModal, setRegisterModal] = useState(false);
 
     useEffect(() => {
         hikeService.getAll()
@@ -36,12 +41,16 @@ function App() {
             })
     }, []);
 
+    //Modals
+    const showLoginModal = () => setLoginModal(true);
+    const closeLoginModal = () => setLoginModal(false);
+    const showRegisterModal = () => setRegisterModal(true);
+    const closeRegisterModal = () => setRegisterModal(false);
+
     const onSubmitCreateHike = async (data) => {
         console.log(data);
 
         const newHike = await hikeService.create(data);
-
-        // TODO: add to state
 
         setHikes(state => [...state, newHike]); // get all old hikes (...state) and add the new one as well
 
@@ -54,12 +63,51 @@ function App() {
         setHikes(state => state.filter(x => x._id !== hikeId));
     };
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const onRegisterSubmit = async (values) => {
+        const {repeatPassword, ...registerData} = values;
 
-    const modalShowHideContext = {
-        handleShow,
-        handleClose,
+        if (repeatPassword !== registerData.password) {
+            return;
+        }
+
+        try {
+            const result = await authService.register(registerData);
+            setAuth(result);
+            navigate('/hikings');
+            closeRegisterModal();
+        } catch (error) {
+            console.log('There is a problem with the registration');
+        }
+    };
+
+    const onLoginSubmit = async (data) => {
+        try {
+            const result = await authService.login(data);
+            
+            setAuth(result);
+            navigate('/hikings');
+            closeLoginModal();
+        } catch (error) {
+            console.log('There is a problem with the login');
+        }
+    };
+
+    const onLogout = async () => {
+        setAuth({}); // client logout
+    };
+
+    const formsContextValues = {
+        onRegisterSubmit,
+        onLoginSubmit,
+        onLogout,
+        showRegisterModal,
+        showLoginModal,
+        closeLoginModal,
+        closeRegisterModal,
+        userId: auth._id,
+        token: auth.accessToken,
+        userEmail: auth.email,
+        isAuthenticated: !!auth.accessToken,
     };
 
     const hikeItemContext = {
@@ -68,28 +116,28 @@ function App() {
 
     return (
         <div className="page">
-            <ModalShowHideContext.Provider value={modalShowHideContext}>
+            <FormsContext.Provider value={formsContextValues}>
                 <Header />
                 <Navigation />
+                <Login show={loginModal} />
+                <Register show={registerModal} />
 
-                <Login show={show} />
-            </ModalShowHideContext.Provider>
-
-            <div className="main__content" style={{ textAlign: 'center' }}>
-                <div className="module-container">
-                    <Routes>
-                        <Route path='/' element={<Home />} />
-                        <Route path='/create-hike' element={<CreateHike onSubmitCreateHike={onSubmitCreateHike} />} />
-                        <Route path='/hikings' element={
-                            <HikeItemContext.Provider value={hikeItemContext}>
-                                <AllHikings hikes={hikes} />
-                            </HikeItemContext.Provider>
-                        }
-                        />
-                        <Route path='/hikings/:hikeId' element={<HikeDetails />} />
-                    </Routes>
+                <div className="main__content" style={{ textAlign: 'center' }}>
+                    <div className="module-container">
+                        <Routes>
+                            <Route path='/' element={<Home />} />
+                            <Route path='/create-hike' element={<CreateHike onSubmitCreateHike={onSubmitCreateHike} />} />
+                            <Route path='/hikings' element={
+                                <HikeItemContext.Provider value={hikeItemContext}>
+                                    <AllHikings hikes={hikes} />
+                                </HikeItemContext.Provider>
+                            }
+                            />
+                            <Route path='/hikings/:hikeId' element={<HikeDetails />} />
+                        </Routes>
+                    </div>
                 </div>
-            </div>
+            </FormsContext.Provider>
             <Footer />
         </div>
     );
