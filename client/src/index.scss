@@ -18,9 +18,58 @@ img {
   max-width: 100%;
 }
 
+// Hamburger Menu
+.burgerMenu {
+  display: none;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  min-height: 35px;
+  width: 3rem;
+  z-index: 3;
+  cursor: pointer;
+
+  .line{
+    width: 30px;
+    height: 3px;
+    background-color: #ecf0f1;
+    display: block;
+    margin: 5px auto;
+    -webkit-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+  }
+
+  @media only screen and (max-width: 700px) {
+    display: block;
+  }
+}
+
+#burgerMenu.is-active .line:nth-child(2){
+  opacity: 0;
+}
+
+#burgerMenu.is-active .line:nth-child(1){
+  -webkit-transform: translateY(13px) rotate(45deg);
+  -ms-transform: translateY(13px) rotate(45deg);
+  -o-transform: translateY(13px) rotate(45deg);
+  transform: translateY(13px) rotate(45deg);
+}
+
+#burgerMenu.is-active .line:nth-child(3){
+  -webkit-transform: translateY(-3px) rotate(-45deg);
+  -ms-transform: translateY(-3px) rotate(-45deg);
+  -o-transform: translateY(-3px) rotate(-45deg);
+  transform: translateY(-3px) rotate(-45deg);
+}
+
 .main__content {
   margin-top: 4rem;
   margin-bottom: 4rem;
+}
+
+header .module-container {
+  padding: 1rem;
 }
 
 .module-container {
@@ -43,4 +92,10 @@ img {
 
 .page__title {
   margin-bottom: 2rem;
+}
+
+@media only screen and (max-width: 920px) {
+  .list { 
+    grid-template-columns: auto;
+  }
 }

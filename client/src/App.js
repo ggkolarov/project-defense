@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
+import $ from 'jquery';
 
 //Services
 import * as authService from './services/authService';
@@ -46,6 +47,22 @@ function App() {
     const closeLoginModal = () => setLoginModal(false);
     const showRegisterModal = () => setRegisterModal(true);
     const closeRegisterModal = () => setRegisterModal(false);
+
+    const mobileMenuClick = () => {
+        $(".burgerMenu").on('click', function() {
+            $(this).addClass('is-active');
+            $(".Header_user__controls__wB6ey").show();
+            $(".Navigation_navigation__Q6rV5").show();
+            $(".Header_add__hiking__AdgHw").show();
+        });
+
+        $(".burgerMenu.is-active").on('click', function() {
+            $(this).removeClass('is-active');
+            $(".Header_user__controls__wB6ey").hide();
+            $(".Navigation_navigation__Q6rV5").hide();
+            $(".Header_add__hiking__AdgHw").hide();
+        });
+    };
 
     const onSubmitCreateHike = async (data) => {
         console.log(data);
@@ -117,7 +134,7 @@ function App() {
     return (
         <div className="page">
             <FormsContext.Provider value={formsContextValues}>
-                <Header />
+                <Header mobileMenuClick={mobileMenuClick} />
                 <Navigation />
                 <Login show={loginModal} />
                 <Register show={registerModal} />

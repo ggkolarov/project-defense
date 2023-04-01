@@ -5,7 +5,9 @@ import { Link } from 'react-router-dom';
 import styles from './Header.module.scss';
 import logo from '../../images/logo.png';
 
-export const Header = () => {
+export const Header = ({
+    mobileMenuClick,
+}) => {
     const { isAuthenticated, userEmail } = useContext(FormsContext);
     const { onLogout } = useContext(FormsContext);
     const { showLoginModal } = useContext(FormsContext);
@@ -15,6 +17,12 @@ export const Header = () => {
         <header>
             <div className="module-container">
                 <Link to="/"><img className={styles.logo} src={logo} alt="" /></Link>
+
+                <div className="burgerMenu" id="burgerMenu" onClick={mobileMenuClick}>
+                    <span className="line"></span>
+                    <span className="line"></span>
+                    <span className="line"></span>
+                </div>
 
                 {isAuthenticated && (
                     <>
