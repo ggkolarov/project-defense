@@ -1,6 +1,6 @@
 import { Hike } from "../components/Hike/Hike";
 
-export const AllHikings = ({
+export const RilaMountains = ({
     hikes,
     onHikeDeleteClick,
 }) => {
@@ -8,12 +8,10 @@ export const AllHikings = ({
         <div className="module-container">
             <h1 className="page__title">Списък с всички маршрути</h1>
             <div className="list">
-                {hikes.map(hike => <Hike key={hike._id} {...hike} onHikeDeleteClick={onHikeDeleteClick} />)}
+                {hikes.filter(hike => hike.mountain.includes('Рила' || 'рила')).map(filteredHike => (
+                    <Hike key={filteredHike._id} {...filteredHike} onHikeDeleteClick={onHikeDeleteClick} />
+                ))}
             </div>
-
-            {hikes.length === 0 && (
-                <h3 className="no-hikes">Все още няма добавени маршрути</h3>
-            )}
         </div>
     );
 };

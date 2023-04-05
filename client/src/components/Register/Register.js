@@ -44,9 +44,6 @@ export const Register = ({
                             <Form.Control type="password" id="repeatPassword" name="repeatPassword" value={formValues.repeatPassword} onChange={onChangeHandler} />
                         </Form.Group>
                         <Button variant="primary" type="submit">Регистрирай се</Button>
-                        <p>Ако имаш регистрация:
-                            <Button variant="secondary" onClick={() => closeRegisterModal()}>Натисни тук</Button>
-                        </p>
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>

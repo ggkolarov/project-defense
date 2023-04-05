@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 import Carousel from 'react-bootstrap/Carousel';
 
 export const Home = ({
@@ -14,7 +16,7 @@ export const Home = ({
                             alt={hike.title}
                         />
                         <Carousel.Caption>
-                            <h3>{hike.title}</h3>
+                            <h3><Link to={`/catalog/${hike._id}`}>{hike.title}</Link></h3>
                         </Carousel.Caption>
                     </Carousel.Item>
                 )}

@@ -39,9 +39,6 @@ export const Login = ({
                             <Form.Control type="password" id="password" name="password" value={formValues.password || ''} onChange={onChangeHandler} />
                         </Form.Group>
                         <Button variant="primary" type="submit">Влез</Button>
-                        <p>Ако нямаш регистрация:
-                            <Button variant="secondary" onClick={() => closeLoginModal()}>Натисни тук</Button>
-                        </p>
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>

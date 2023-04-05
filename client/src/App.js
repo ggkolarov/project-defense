@@ -26,6 +26,10 @@ import { Register } from './components/Register/Register';
 import { CreateHike } from './components/CreateHike/CreateHike';
 import { AllHikings } from './pages/AllHikings';
 import { HikeDetails } from './components/HikeDetails/HikeDetails';
+import { PirinMountains } from './pages/PirinMountains';
+import { RilaMountains } from './pages/RilaMountains';
+import { RodopiMountains } from './pages/RodopiMountains';
+import { StaraPlaninaMountains } from './pages/StaraPlaninaMountains';
 
 function App() {
     const navigate = useNavigate();
@@ -102,7 +106,7 @@ function App() {
             const result = await authService.login(data);
             
             setAuth(result);
-            navigate('/catalog');
+            navigate('/');
             closeLoginModal();
         } catch (error) {
             console.log('There is a problem with the login');
@@ -151,6 +155,10 @@ function App() {
                             }
                             />
                             <Route path='/catalog/:hikeId' element={<HikeDetails />} />
+                            <Route path='/mountains/pirin' element={<PirinMountains hikes={hikes} />} />
+                            <Route path='/mountains/rila' element={<RilaMountains hikes={hikes} />} />
+                            <Route path='/mountains/rodopi' element={<RodopiMountains hikes={hikes} />} />
+                            <Route path='/mountains/stara-planina' element={<StaraPlaninaMountains hikes={hikes} />} />
                         </Routes>
                     </div>
                 </div>
