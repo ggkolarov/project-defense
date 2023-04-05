@@ -24,9 +24,9 @@ export const Hike = ({
                 <p className={styles.hike__excerpt}>{hikeInfo}</p>
 
                 <div className={styles.buttons}>
-                    <Link className={styles.hike__button} to={`/hikings/${_id}`}>Прочети още</Link>
+                    <Link className={styles.hike__button} to={`/catalog/${_id}`}>Прочети още</Link>
                     {isAuthenticated && (
-                        <button className={styles.hike__button} onClick={() => onHikeDeleteClick(_id)}>Изтрий</button>
+                        <button className={styles.hike__button} onClick={() => {onHikeDeleteClick(_id); console.log(_id);}}>Изтрий</button>
                     )}
                 </div>
             </div>

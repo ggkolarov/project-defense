@@ -71,7 +71,7 @@ function App() {
 
         setHikes(state => [...state, newHike]); // get all old hikes (...state) and add the new one as well
 
-        navigate('/hikings');
+        navigate('/catalog');
     };
 
     const onHikeDeleteClick = async (hikeId) => {
@@ -90,7 +90,7 @@ function App() {
         try {
             const result = await authService.register(registerData);
             setAuth(result);
-            navigate('/hikings');
+            navigate('/catalog');
             closeRegisterModal();
         } catch (error) {
             console.log('There is a problem with the registration');
@@ -102,7 +102,7 @@ function App() {
             const result = await authService.login(data);
             
             setAuth(result);
-            navigate('/hikings');
+            navigate('/catalog');
             closeLoginModal();
         } catch (error) {
             console.log('There is a problem with the login');
@@ -142,15 +142,15 @@ function App() {
                 <div className="main__content" style={{ textAlign: 'center' }}>
                     <div className="module-container">
                         <Routes>
-                            <Route path='/' element={<Home />} />
+                            <Route path='/' element={<Home hikes={hikes} />} />
                             <Route path='/create-hike' element={<CreateHike onSubmitCreateHike={onSubmitCreateHike} />} />
-                            <Route path='/hikings' element={
+                            <Route path='/catalog' element={
                                 <HikeItemContext.Provider value={hikeItemContext}>
                                     <AllHikings hikes={hikes} />
                                 </HikeItemContext.Provider>
                             }
                             />
-                            <Route path='/hikings/:hikeId' element={<HikeDetails />} />
+                            <Route path='/catalog/:hikeId' element={<HikeDetails />} />
                         </Routes>
                     </div>
                 </div>

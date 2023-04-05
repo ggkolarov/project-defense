@@ -36,7 +36,7 @@ export const HikeDetails = () => {
                     </ul>
                 </div>
                 <div className="hike__details--map">
-                    <Map />
+                    <Map hike={hike} />
                 </div>
             </div>
             

@@ -25,6 +25,14 @@ export const CreateHike = ({
                 <Form.Control type="text" id="season" name="season" placeholder="Зима, Лято, Есен, Пролет" value={formValues.season || ''} onChange={onChangeHandler} />
             </Form.Group>
             <Form.Group className="mb-3">
+                <Form.Label>Георграфска ширина (Latitude)</Form.Label>
+                <Form.Control type="text" id="latitude" name="latitude" placeholder="41.755514" value={formValues.latitude || ''} onChange={onChangeHandler} />
+            </Form.Group>
+            <Form.Group className="mb-3">
+                <Form.Label>Георграфска дължина (Longitude)</Form.Label>
+                <Form.Control type="text" id="longitude" name="longitude" placeholder="23.39969" value={formValues.longitude || ''} onChange={onChangeHandler} />
+            </Form.Group>
+            <Form.Group className="mb-3">
                 <Form.Label>Област</Form.Label>
                 <Form.Control type="text" id="region" name="region" placeholder="София Град" value={formValues.region || ''} onChange={onChangeHandler} />
             </Form.Group>

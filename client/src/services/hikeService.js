@@ -12,21 +12,18 @@ export const getAll = async () => {
 
 export const getOne = async(hikeId) => {
     const result = await request.get(`${baseUrl}/${hikeId}`);
-    // console.log(result);
-
+    
     return result;
 };
 
 export const create = async (hikeId) => {
     const result = await request.post(baseUrl, hikeId);
 
-    console.log(result);
-    
     return result;
 };
 
 export const remove = async (hikeId) => {
-    const result = await request.del(baseUrl, hikeId);
+    const result = await request.del(`${baseUrl}/${hikeId}`);
 
     return result;
 };

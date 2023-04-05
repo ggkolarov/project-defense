@@ -6,7 +6,7 @@ export const Navigation = () => {
         <div className={styles.navigation}>
             <nav>
                 <Link to="/">Начало</Link>
-                <Link to="/hikings">Виж всички преходи</Link>
+                <Link to="/catalog">Виж всички преходи</Link>
                 <Link to="/winter-hikings">Зимни преходи</Link>
                 <Link to="/summer-hikings">Летни преходи</Link>
             </nav>
