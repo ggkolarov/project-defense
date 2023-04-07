@@ -12,8 +12,6 @@ export const Header = ({
     const { onLogout } = useContext(FormsContext);
     const { showLoginModal } = useContext(FormsContext);
     const { showRegisterModal } = useContext(FormsContext);
-
-    console.log(isAuthenticated);
     
     return (
         <header>

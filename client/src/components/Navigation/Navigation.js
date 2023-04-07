@@ -11,20 +11,20 @@ export const Navigation = () => {
             <Container fluid>
                 <Navbar.Collapse id="navbar-dark-example">
                     <Nav>
-                        <Nav.Link href="/">Начало</Nav.Link>
-                        <Nav.Link href="/catalog">Всички маршрути</Nav.Link>
+                        <Nav.Link as={Link} to="/">Начало</Nav.Link>
+                        <Nav.Link as={Link} to="/catalog">Всички маршрути</Nav.Link>
                         <NavDropdown
                             id="nav-dropdown-dark-example"
                             title="Планини"
                             menuVariant="dark"
                         >
-                            <NavDropdown.Item href="/mountains/pirin">Пирин</NavDropdown.Item>
+                            <NavDropdown.Item as={Link} to="/mountains/pirin">Пирин</NavDropdown.Item>
                             <NavDropdown.Divider />
-                            <NavDropdown.Item href="/mountains/rila">Рила</NavDropdown.Item>
+                            <NavDropdown.Item as={Link} to="/mountains/rila">Рила</NavDropdown.Item>
                             <NavDropdown.Divider />
-                            <NavDropdown.Item href="/mountains/rodopi">Родопи</NavDropdown.Item>
+                            <NavDropdown.Item as={Link} to="/mountains/rodopi">Родопи</NavDropdown.Item>
                             <NavDropdown.Divider />
-                            <NavDropdown.Item href="/mountains/stara-planina">Стара планина</NavDropdown.Item>
+                            <NavDropdown.Item as={Link} to="/mountains/stara-planina">Стара планина</NavDropdown.Item>
                         </NavDropdown>
                     </Nav>
                 </Navbar.Collapse>
