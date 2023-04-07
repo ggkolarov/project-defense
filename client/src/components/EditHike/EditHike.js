@@ -1,14 +1,21 @@
-import styles from './CreateHike.module.scss';
-
-import { Form, Button } from 'react-bootstrap';
+import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 
 //Hook
 import { useForm } from '../../hooks/useForm';
+import { useService } from '../../hooks/useService';
+import { hikeServiceFactory } from '../../services/hikeService';
 
-export const CreateHike = ({
-    onSubmitCreateHike,
+import styles from './EditHike.module.scss';
+import { Form, Button } from 'react-bootstrap';
+
+export const EditHike = ({
+    onSubmitEditHike,
 }) => {
-    const {formValues, onChangeHandler, onSubmit} = useForm({ 
+    const { hikeId } = useParams();
+    const hikeService = useService(hikeServiceFactory);
+    const {formValues, onChangeHandler, onSubmit, changeValues} = useForm({
+        _id: '',
         title: '',
         imageUrl: '',
         season: '',
@@ -22,10 +29,17 @@ export const CreateHike = ({
         length: '',
         duration: '',
         hikeInfo: '',
-     }, onSubmitCreateHike);
+    }, onSubmitEditHike);
+
+    useEffect(() => {
+        hikeService.getOne(hikeId)
+        .then(result => {
+            changeValues(result);
+        });
+    }, [hikeId]);
 
     return (
-        <Form className={styles.create__form} onSubmit={onSubmit}>
+        <Form className={styles.create__form} method="POST" onSubmit={onSubmit}>
             <Form.Group className="mb-3">
                 <Form.Label>Заглавие на маршрута</Form.Label>
                 <Form.Control type="text" id="title" name="title" placeholder="х.Вирхен - вр. Мусала" value={formValues.title || ''} onChange={onChangeHandler} />
@@ -79,7 +93,7 @@ export const CreateHike = ({
                 <Form.Control as="textarea" style={{ height: '100px' }} type="text" id="hikeInfo" name="hikeInfo" placeholder="Информация за маршрута" value={formValues.hikeInfo || ''} onChange={onChangeHandler} />
             </Form.Group>
             <Button variant="primary" type="submit">
-                Добави
+                Редактирай
             </Button>
         </Form>
     );

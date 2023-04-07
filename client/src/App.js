@@ -3,12 +3,11 @@ import { Routes, Route, useNavigate } from 'react-router-dom';
 import $ from 'jquery';
 
 //Services
-import * as authService from './services/authService';
-import * as hikeService from './services/hikeService';
+import { hikeServiceFactory } from './services/hikeService';
+import { authServiceFactory } from './services/authService';
 
 //Contexts
 import { FormsContext } from './contexts/FormsContext';
-import { HikeItemContext } from './contexts/HikeItemContext';
 
 // Styles
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -30,6 +29,7 @@ import { PirinMountains } from './pages/PirinMountains';
 import { RilaMountains } from './pages/RilaMountains';
 import { RodopiMountains } from './pages/RodopiMountains';
 import { StaraPlaninaMountains } from './pages/StaraPlaninaMountains';
+import { EditHike } from './components/EditHike/EditHike';
 
 function App() {
     const navigate = useNavigate();
@@ -37,6 +37,9 @@ function App() {
     const [hikes, setHikes] = useState([]);
     const [loginModal, setLoginModal] = useState(false);
     const [registerModal, setRegisterModal] = useState(false);
+
+    const hikeService = hikeServiceFactory(auth.accessToken);
+    const authService = authServiceFactory(auth.accessToken);
 
     useEffect(() => {
         hikeService.getAll()
@@ -82,6 +85,7 @@ function App() {
         await hikeService.remove(hikeId);
 
         setHikes(state => state.filter(x => x._id !== hikeId));
+        navigate('/catalog');
     };
 
     const onRegisterSubmit = async (values) => {
@@ -101,12 +105,12 @@ function App() {
         }
     };
 
-    const onLoginSubmit = async (data) => {
+    const onLoginSubmit = async (loginData) => {
         try {
-            const result = await authService.login(data);
+            const result = await authService.login(loginData);
             
             setAuth(result);
-            navigate('/');
+            navigate('/catalog');
             closeLoginModal();
         } catch (error) {
             console.log('There is a problem with the login');
@@ -114,10 +118,21 @@ function App() {
     };
 
     const onLogout = async () => {
-        setAuth({}); // client logout
+        await authService.logout();
+        
+        setAuth({}); 
+    };
+
+    const onSubmitEditHike = async (values) => {
+        const result = await hikeService.edit(values._id, values);
+
+        setHikes(state => state.map(editedHike => editedHike._id === values._id ? result : editedHike));
+
+        navigate(`/catalog/${values._id}`);
     };
 
     const formsContextValues = {
+        onHikeDeleteClick,
         onRegisterSubmit,
         onLoginSubmit,
         onLogout,
@@ -126,13 +141,10 @@ function App() {
         closeLoginModal,
         closeRegisterModal,
         userId: auth._id,
+        userEmail: auth.email,
         token: auth.accessToken,
         userEmail: auth.email,
         isAuthenticated: !!auth.accessToken,
-    };
-
-    const hikeItemContext = {
-        onHikeDeleteClick,
     };
 
     return (
@@ -148,13 +160,9 @@ function App() {
                         <Routes>
                             <Route path='/' element={<Home hikes={hikes} />} />
                             <Route path='/create-hike' element={<CreateHike onSubmitCreateHike={onSubmitCreateHike} />} />
-                            <Route path='/catalog' element={
-                                <HikeItemContext.Provider value={hikeItemContext}>
-                                    <AllHikings hikes={hikes} />
-                                </HikeItemContext.Provider>
-                            }
-                            />
+                            <Route path='/catalog' element={<AllHikings hikes={hikes} />} />
                             <Route path='/catalog/:hikeId' element={<HikeDetails />} />
+                            <Route path='/catalog/edit/:hikeId' element={<EditHike onSubmitEditHike={onSubmitEditHike} />} />
                             <Route path='/mountains/pirin' element={<PirinMountains hikes={hikes} />} />
                             <Route path='/mountains/rila' element={<RilaMountains hikes={hikes} />} />
                             <Route path='/mountains/rodopi' element={<RodopiMountains hikes={hikes} />} />

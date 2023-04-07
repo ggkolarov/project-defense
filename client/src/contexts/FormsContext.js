@@ -1,3 +1,3 @@
 import { createContext } from 'react';
 
-export const FormsContext = createContext('');
+export const FormsContext = createContext();

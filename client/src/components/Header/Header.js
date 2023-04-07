@@ -13,6 +13,8 @@ export const Header = ({
     const { showLoginModal } = useContext(FormsContext);
     const { showRegisterModal } = useContext(FormsContext);
 
+    console.log(isAuthenticated);
+    
     return (
         <header>
             <div className="module-container">

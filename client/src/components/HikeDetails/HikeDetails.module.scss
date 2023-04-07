@@ -22,7 +22,7 @@
         }
     }
 
-    & > div {
+    & > div:not(.buttons) {
         display: grid;
         grid-template-columns: 1fr 2.5fr; 
         grid-gap: 2rem;
@@ -31,5 +31,41 @@
         @media only screen and (max-width: 900px) { 
             grid-template-columns: auto;
         }
+    }
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    
+    .hike__button {
+        margin: 0 .5rem;
+    }
+}
+
+.hike__button {
+    display: inline-block;
+    padding: 1rem;
+    text-align: center;
+    text-decoration: none;
+    transition: all 500ms ease;
+    cursor: pointer;
+    color: #368c91;
+    font-weight: 600;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 200px;
+    border-radius: 1rem;
+    border: 0.2rem solid #368c91;
+
+    &:hover {
+        animation: slideUp 500ms ease forwards;
+        color: #191825;
+        background: linear-gradient(to left, #03c988 50%, #2e3840 50%);
+        background-position: 100%;
+        background-size: 200% 100%;
     }
 }
