@@ -7,7 +7,8 @@ import { hikeServiceFactory } from './services/hikeService';
 import { authServiceFactory } from './services/authService';
 
 //Contexts
-import { FormsContext } from './contexts/FormsContext';
+import { AuthContext } from './contexts/AuthContext';
+import { HeaderContext } from './contexts/HeaderContext';
 
 // Styles
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -131,15 +132,18 @@ function App() {
         navigate(`/catalog/${values._id}`);
     };
 
-    const formsContextValues = {
-        onHikeDeleteClick,
-        onRegisterSubmit,
-        onLoginSubmit,
-        onLogout,
+    const headerContextValues = {      
         showRegisterModal,
         showLoginModal,
         closeLoginModal,
         closeRegisterModal,
+        mobileMenuClick,
+    }
+
+    const authContextValues = {
+        onRegisterSubmit,
+        onLoginSubmit,
+        onLogout,
         userId: auth._id,
         userEmail: auth.email,
         token: auth.accessToken,
@@ -149,8 +153,10 @@ function App() {
 
     return (
         <div className="page">
-            <FormsContext.Provider value={formsContextValues}>
-                <Header mobileMenuClick={mobileMenuClick} />
+            <AuthContext.Provider value={authContextValues}>
+                <HeaderContext.Provider value={headerContextValues}>
+                    <Header />
+                </HeaderContext.Provider>
                 <Navigation />
                 <Login show={loginModal} />
                 <Register show={registerModal} />
@@ -161,7 +167,7 @@ function App() {
                             <Route path='/' element={<Home hikes={hikes} />} />
                             <Route path='/create-hike' element={<CreateHike onSubmitCreateHike={onSubmitCreateHike} />} />
                             <Route path='/catalog' element={<AllHikings hikes={hikes} />} />
-                            <Route path='/catalog/:hikeId' element={<HikeDetails />} />
+                            <Route path='/catalog/:hikeId' element={<HikeDetails onHikeDeleteClick={onHikeDeleteClick}/>} />
                             <Route path='/catalog/edit/:hikeId' element={<EditHike onSubmitEditHike={onSubmitEditHike} />} />
                             <Route path='/mountains/pirin' element={<PirinMountains hikes={hikes} />} />
                             <Route path='/mountains/rila' element={<RilaMountains hikes={hikes} />} />
@@ -170,7 +176,7 @@ function App() {
                         </Routes>
                     </div>
                 </div>
-            </FormsContext.Provider>
+            </AuthContext.Provider>
             <Footer />
         </div>
     );

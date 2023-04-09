@@ -5,16 +5,18 @@ import { hikeServiceFactory } from '../../services/hikeService';
 import styles from './HikeDetails.module.scss';
 import { Map } from "../Map/Map";
 import { useService } from "../../hooks/useService";
-import { FormsContext } from '../../contexts/FormsContext';
+import { AuthContext } from '../../contexts/AuthContext';
 import { commentServiceFactory } from "../../services/commentService";
 
 import { Form, Button } from 'react-bootstrap';
 
-export const HikeDetails = () => {
+export const HikeDetails = ({
+    onHikeDeleteClick
+}) => {
     const [username, setUsername] = useState('');
     const [comment, setComment] = useState('');
     const [comments, setComments] = useState([]);
-    const { isAuthenticated, userId, onHikeDeleteClick } = useContext(FormsContext);
+    const { isAuthenticated, userId } = useContext(AuthContext);
     const { hikeId } = useParams();
     const [hike, setHike] = useState({});
     const hikeService = useService(hikeServiceFactory);
@@ -65,7 +67,6 @@ export const HikeDetails = () => {
                         <li><strong>Денивелация:</strong> {hike.denivelation}</li>
                         <li><strong>Дължина на маршрута:</strong> {hike.length}</li>
                         <li><strong>Времетраене:</strong> {hike.duration}</li>
-                        <li><strong>Публикувано от:</strong> {hike._ownerId}</li>
                     </ul>
                 </div>
                 <div className="hike__details--map">

@@ -6,7 +6,7 @@ export const PirinMountains = ({
 }) => {
     return (
         <div className="module-container">
-            <h1 className="page__title">Списък с всички маршрути</h1>
+            <h1 className="page__title">Списък с маршрути в Пирин планина</h1>
             <div className="list">
                 {hikes.filter(hike => hike.mountain.includes('Пирин' || 'пирин')).map(filteredHike => (
                     <Hike key={filteredHike._id} {...filteredHike} onHikeDeleteClick={onHikeDeleteClick} />

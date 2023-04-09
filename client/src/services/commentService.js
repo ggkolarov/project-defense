@@ -1,4 +1,3 @@
-import { get } from 'jquery';
 import { requestFactory } from './requester';
 
 const baseUrl = 'http://localhost:3030/data/comments';

@@ -1,8 +1,8 @@
 import { useContext } from "react";
-import { FormsContext } from "../contexts/FormsContext";
+import { AuthContext } from "../contexts/AuthContext";
 
 export const useService = (serviceFactory) => {
-    const { token } = useContext(FormsContext);
+    const { token } = useContext(AuthContext);
 
     const service = serviceFactory(token);
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useContext } from 'react';
 
-import { FormsContext } from '../../contexts/FormsContext';
+import { AuthContext } from '../../contexts/AuthContext';
 import { useForm } from '../../hooks/useForm';
 
 import { Modal, Form, Button } from 'react-bootstrap';
@@ -9,8 +9,8 @@ import { Modal, Form, Button } from 'react-bootstrap';
 export const Register = ({
     show,
 }) => {
-    const { onRegisterSubmit } = useContext(FormsContext);
-    const { closeRegisterModal } = useContext(FormsContext);
+    const { onRegisterSubmit } = useContext(AuthContext);
+    const { closeRegisterModal } = useContext(AuthContext);
 
     const {formValues, onChangeHandler, onSubmit} = useForm({
         email: '',

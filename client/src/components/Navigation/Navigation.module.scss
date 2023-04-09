@@ -9,7 +9,7 @@
 
     @media only screen and (max-width: 700px) {
         display: none;
-        background-color: #368c91;
+        background-color: #368c91 !important;
     }
 
     nav {
@@ -35,6 +35,6 @@
     }
 
     @media only screen and (max-width: 700px) {
-        height: auto;
+        min-height: 250px;
     }  
 }
