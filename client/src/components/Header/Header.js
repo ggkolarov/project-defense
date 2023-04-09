@@ -1,17 +1,18 @@
 import { useContext } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
-import { HeaderContext } from '../../contexts/HeaderContext';
+import { ModalsContext } from '../../contexts/ModalsContext';
 
 import { Link } from 'react-router-dom';
 import styles from './Header.module.scss';
 import logo from '../../images/logo.png';
 
-export const Header = () => {
+export const Header = ({
+    mobileMenuClick,
+}) => {
     const { isAuthenticated, userEmail } = useContext(AuthContext);
     const { onLogout } = useContext(AuthContext);
-    const { showLoginModal } = useContext(HeaderContext);
-    const { showRegisterModal } = useContext(HeaderContext);
-    const { mobileMenuClick } = useContext(HeaderContext);
+    const { showLoginModal } = useContext(ModalsContext);
+    const { showRegisterModal } = useContext(ModalsContext);
     
     return (
         <header>

@@ -8,7 +8,7 @@ import { authServiceFactory } from './services/authService';
 
 //Contexts
 import { AuthContext } from './contexts/AuthContext';
-import { HeaderContext } from './contexts/HeaderContext';
+import { ModalsContext } from './contexts/ModalsContext';
 
 // Styles
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -132,12 +132,11 @@ function App() {
         navigate(`/catalog/${values._id}`);
     };
 
-    const headerContextValues = {      
+    const modalsContextValues = {      
         showRegisterModal,
         showLoginModal,
         closeLoginModal,
         closeRegisterModal,
-        mobileMenuClick,
     }
 
     const authContextValues = {
@@ -154,12 +153,12 @@ function App() {
     return (
         <div className="page">
             <AuthContext.Provider value={authContextValues}>
-                <HeaderContext.Provider value={headerContextValues}>
-                    <Header />
-                </HeaderContext.Provider>
+                <ModalsContext.Provider value={modalsContextValues}>
+                    <Header  mobileMenuClick={mobileMenuClick}/>
                 <Navigation />
                 <Login show={loginModal} />
                 <Register show={registerModal} />
+                </ModalsContext.Provider>
 
                 <div className="main__content" style={{ textAlign: 'center' }}>
                     <div className="module-container">

@@ -2,6 +2,7 @@ import React from 'react';
 import { useContext } from 'react';
 
 import { AuthContext } from '../../contexts/AuthContext';
+import { ModalsContext } from '../../contexts/ModalsContext';
 import { useForm } from '../../hooks/useForm';
 
 import { Modal, Form, Button } from 'react-bootstrap';
@@ -10,7 +11,7 @@ export const Login = ({
     show,
 }) => {
     const { onLoginSubmit } = useContext(AuthContext);
-    const { closeLoginModal } = useContext(AuthContext);
+    const { closeLoginModal } = useContext(ModalsContext);
 
     const { formValues, onChangeHandler, onSubmit } = useForm({
         email: '',
