@@ -8,7 +8,7 @@ import { useService } from "../../hooks/useService";
 import { AuthContext } from '../../contexts/AuthContext';
 import { commentServiceFactory } from "../../services/commentService";
 
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, Alert } from 'react-bootstrap';
 
 export const HikeDetails = ({
     onHikeDeleteClick
@@ -20,7 +20,9 @@ export const HikeDetails = ({
     const { hikeId } = useParams();
     const [hike, setHike] = useState({});
     const hikeService = useService(hikeServiceFactory);
-    const commentService = useService(commentServiceFactory)
+    const commentService = useService(commentServiceFactory);
+    const { validateAuthForm } = useContext(AuthContext);
+    const { authFormErros } = useContext(AuthContext);
 
     useEffect(() => {
         hikeService.getOne(hikeId)
@@ -102,13 +104,23 @@ export const HikeDetails = ({
                     <Form className={styles.create__form} method="POST" onSubmit={onCommentSubmit}>
                         <Form.Group className="mb-3">
                             <Form.Label>Потребителско име или имейл</Form.Label>
-                            <Form.Control type="text" id="username" name="username" placeholder="Иван" value={username} onChange={(e) => setUsername(e.target.value)} />
+                            <Form.Control type="text" id="username" name="username" placeholder="Иван" value={username} onBlur={validateAuthForm} onChange={(e) => setUsername(e.target.value)} />
+                            {authFormErros.username &&
+                                <Alert variant="danger" className='error-alert'>
+                                    {authFormErros.username}
+                                </Alert>
+                            }
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>Коментар</Form.Label>
-                            <Form.Control as="textarea" style={{ height: '100px' }} type="text" id="comment" name="comment" placeholder="Коментар...." value={comment} onChange={(e) => setComment(e.target.value)} />
+                            <Form.Control as="textarea" style={{ height: '100px' }} type="text" id="comment" name="comment" placeholder="Коментар...." value={comment} onBlur={validateAuthForm} onChange={(e) => setComment(e.target.value)} />
+                            {authFormErros.comment &&
+                                <Alert variant="danger" className='error-alert'>
+                                    {authFormErros.comment}
+                                </Alert>
+                            }
                         </Form.Group>
-                        <Button variant="outline-dark" type="submit">Добави коментар</Button>
+                        <Button variant="outline-dark" disabled={!username || !comment } type="submit">Добави коментар</Button>
                     </Form>
                 </>
             )}

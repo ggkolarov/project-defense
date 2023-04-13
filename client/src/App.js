@@ -42,10 +42,31 @@ function App() {
     const hikeService = hikeServiceFactory(auth.accessToken);
     const authService = authServiceFactory(auth.accessToken);
 
+    const [authFormErros, setAuthFormErros] = useState({
+        email: '',
+        password: '',
+        repeatPassword: '',
+    });
+
+    const [hikeFormErrors, setHikeFormErrors] = useState({
+        title: '',
+        imageUrl: '',
+        season: '',
+        latitude: '',
+        longitude: '',
+        region: '',
+        mountain: '',
+        startingPoint: '',
+        endPoint: '',
+        denivelation: '',
+        length: '',
+        duration: '',
+        hikeInfo: '',
+    });
+
     useEffect(() => {
         hikeService.getAll()
             .then(result => {
-                console.log(result);
                 setHikes(Object.values(result));
             })
     }, []);
@@ -71,14 +92,162 @@ function App() {
             $(".Header_add__hiking__AdgHw").hide();
         });
     };
+    
+    const isValidEmail = (email) => {
+        return /\S+@\S+\.\S+/.test(email);
+    };
+
+    const isValidUrl = (url) => {
+        return /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/.test(url);
+    };
+
+    const onRegisterSubmit = async (values) => {
+        const {repeatPassword, ...registerData} = values;
+        const { email } = values;
+        const errors = {};
+
+        if (repeatPassword !== registerData.password) {
+            errors.passwordMatch = 'Паролите не съвпадат!';
+            setAuthFormErros(errors);
+            return;
+        }
+
+        if (!isValidEmail(email)) {
+            errors.email = 'Невалиден имейл!'
+            setAuthFormErros(errors);
+            return;
+        }
+
+        try {
+            const result = await authService.register(registerData);
+            setAuth(result);
+            navigate('/catalog');
+            closeRegisterModal();
+        } catch (error) {
+            errors.userAlreadyExists = 'Вече има съществуващ потребител с този имейл!';
+        }
+
+        setAuthFormErros(errors);
+    };
+
+    const onLoginSubmit = async (loginData) => {
+        const errors = {};
+
+        try {
+            const result = await authService.login(loginData);
+            
+            setAuth(result);
+            navigate('/catalog');
+            closeLoginModal();
+        } catch (error) {
+            errors.incorrectLoginCredentials = 'Невалидни данни! Моля проверете вашият имейл или парола!';
+        }
+
+        setAuthFormErros(errors);
+    };
+
+    const onLogout = async () => {
+        await authService.logout();
+        
+        setAuth({}); 
+    };
+
+    const validateAuthForm = (e) => {
+        const value = e.target.value;
+        const errors = {};
+
+        if(e.target.name === 'username' && (value.length <= 0 )) {
+            errors.username = 'Моля въведете Потребителско име!';
+        }
+
+        if(e.target.name === 'comment' && (value.length <= 0 )) {
+            errors.comment = 'Моля въведете коментар!';
+        }
+
+        if(e.target.name === 'email' && !isValidEmail(e.target.value)) {
+            errors.email = 'Невалиден имейл!';
+        }
+
+        if(e.target.name === 'password' && (value.length < 5 )) {
+            errors.password = 'Паролата трябва да бъде дълга поне 5 символа!';
+        }
+
+        if(e.target.name === 'repeatPassword' && (value.length < 5 )) {
+            errors.repeatPassword = 'Паролата трябва да бъде дълга поне 5 символа!';
+        }
+
+        setAuthFormErros(errors);
+    };
+
+    const validateHikeForm = (e) => {
+        const value = e.target.value;
+        const hikeErros = {};
+
+        if(e.target.name === 'title' && (value.length <= 0 )) {
+            hikeErros.title = 'Заглавието е задължително!';
+        }
+
+        if(e.target.name === 'imageUrl' && !isValidUrl(e.target.value)) {
+            hikeErros.imageUrl = 'Моля въведете валиден линк за снимката!';
+        }
+
+        if(e.target.name === 'season' && (value.length <= 0 )) {
+            hikeErros.season = 'Моля въведете сезон, в който е правен прехода!';
+        }
+
+        if(e.target.name === 'latitude' && (value.length <= 0 )) {
+            hikeErros.latitude = 'Моля въведете географска ширина на крайната точка!';
+        }
+
+        if(e.target.name === 'longitude' && (value.length <= 0 )) {
+            hikeErros.longitude = 'Моля въведете географска дължина на крайната точка!';
+        }
+
+        if(e.target.name === 'region' && (value.length <= 0 )) {
+            hikeErros.region = 'Моля въведете регион, в който е местонахождението на прехода!';
+        }
+
+        if(e.target.name === 'mountain' && (value.length <= 0 )) {
+            hikeErros.mountain = 'Моля въведете името на планината, в която е маршрутът!';
+        }
+
+        if(e.target.name === 'startingPoint' && (value.length <= 0 )) {
+            hikeErros.startingPoint = 'Моля въведете начална точка!';
+        }
+
+        if(e.target.name === 'endPoint' && (value.length <= 0 )) {
+            hikeErros.endPoint = 'Моля въведете крайна точка!';
+        }
+
+        if(e.target.name === 'denivelation' && (value.length <= 0 )) {
+            hikeErros.denivelation = 'Моля въведете денивелацията на маршрута!';
+        }
+
+        if(e.target.name === 'length' && (value.length <= 0 )) {
+            hikeErros.length = 'Моля въведете дължина на маршрута!';
+        }
+        
+        if(e.target.name === 'duration' && (value.length <= 0 )) {
+            hikeErros.duration = 'Моля въведете времетраене на маршрута!';
+        }
+
+        setHikeFormErrors(hikeErros);
+    };
 
     const onSubmitCreateHike = async (data) => {
-        console.log(data);
+        const { imageUrl } = data;
+        const hikeErros = {};
+
+        if (!isValidUrl(imageUrl)) {
+            hikeErros.imageUrl = 'Моля въведете валиден линк за снимката!';
+
+            setHikeFormErrors(hikeErros);
+            return;
+        }
 
         const newHike = await hikeService.create(data);
 
-        setHikes(state => [...state, newHike]); // get all old hikes (...state) and add the new one as well
-
+        setHikes(state => [...state, newHike]); 
         navigate('/catalog');
     };
 
@@ -89,42 +258,17 @@ function App() {
         navigate('/catalog');
     };
 
-    const onRegisterSubmit = async (values) => {
-        const {repeatPassword, ...registerData} = values;
+    const onSubmitEditHike = async (values) => {
+        const { imageUrl } = values;
+        const hikeErros = {};
 
-        if (repeatPassword !== registerData.password) {
+        if (!isValidUrl(imageUrl)) {
+            hikeErros.imageUrl = 'Моля въведете валиден линк за снимката!';
+            
+            setHikeFormErrors(hikeErros);
             return;
         }
 
-        try {
-            const result = await authService.register(registerData);
-            setAuth(result);
-            navigate('/catalog');
-            closeRegisterModal();
-        } catch (error) {
-            console.log('There is a problem with the registration');
-        }
-    };
-
-    const onLoginSubmit = async (loginData) => {
-        try {
-            const result = await authService.login(loginData);
-            
-            setAuth(result);
-            navigate('/catalog');
-            closeLoginModal();
-        } catch (error) {
-            console.log('There is a problem with the login');
-        }
-    };
-
-    const onLogout = async () => {
-        await authService.logout();
-        
-        setAuth({}); 
-    };
-
-    const onSubmitEditHike = async (values) => {
         const result = await hikeService.edit(values._id, values);
 
         setHikes(state => state.map(editedHike => editedHike._id === values._id ? result : editedHike));
@@ -143,6 +287,10 @@ function App() {
         onRegisterSubmit,
         onLoginSubmit,
         onLogout,
+        validateAuthForm,
+        validateHikeForm,
+        authFormErros,
+        hikeFormErrors,
         userId: auth._id,
         userEmail: auth.email,
         token: auth.accessToken,
